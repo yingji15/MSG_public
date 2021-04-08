@@ -1,0 +1,7 @@
+# ftp://ftp.ensembl.org/pub/grch37/current/gtf/homo_sapiens/
+# ftp://ftp.ensembl.org/pub/release-98/gtf/homo_sapiens
+
+# generate gene id file
+less Homo_sapiens.GRCh38.98.gtf.gz | perl -lane 'print join("\t",@F[9,0,3,4,6,13,17]) if $F[2] eq "gene"'|sed 's/;//g' |sed 's/"//g' >gene.id
+
+# use this file to get the region within 500kb up and down stream

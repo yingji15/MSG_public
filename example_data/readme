@@ -1,0 +1,9 @@
+# This is meant to provide an example of the files we used in real data application
+
+# 1. LD reference matrix: this is derived from random 5000 samples from BioVU
+ENSG00000100197.CYP2D6.cov.RData
+# 2. genotype file from GTEx, the value is random generated, mimic the centered genotype value 
+ENSG00000100197.CYP2D6.toy.x_all
+# 3. expression and splicing data from GTEx, this is real data public available from GTEx portal processed by step0 and step1 scripts in scripts/
+ENSG00000100197.CYP2D6.y_all
+

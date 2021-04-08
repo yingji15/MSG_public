@@ -1,0 +1,26 @@
+
+# We only want to include certain SNPs, also we need to convert those from hg19 to hg38 since GTEx v8 data is provided in hg38
+
+# download the SNPs to include in model (i.e., SNPs in hapmap3)
+wget https://data.broadinstitute.org/alkesgroup/FUSION/LDREF.tar.bz2
+
+
+# combine all chromosomes
+less 1000G.EUR.1.bim 1000G.EUR.2.bim 1000G.EUR.3.bim 1000G.EUR.4.bim 1000G.EUR.5.bim 1000G.EUR.6.bim 1000G.EUR.7.bim 1000G.EUR.8.bim 1000G.EUR.9.bim 1000G.EUR.10.bim 1000G.EUR.11.bim 1000G.EUR.12.bim 1000G.EUR.13.bim 1000G.EUR.14.bim 1000G.EUR.15.bim 1000G.EUR.16.bim 1000G.EUR.17.bim 1000G.EUR.18.bim 1000G.EUR.19.bim 1000G.EUR.20.bim 1000G.EUR.21.bim 1000G.EUR.22.bim  |perl -lane 'print join("\t","chr".$F[0].":$F[3]-$F[3]",@F[1,4,5]) '  > 1000G.EUR.allchrom.bim
+
+# use ucsc to convert hg19 to hg38
+https://genome.ucsc.edu/cgi-bin/hgLiftOver
+# upload file 1000G.EUR.allchrom.bim
+# the webpage will generate 2 files: 1 with successful conversions (hglft_genome_2c8ac_f3d400.bed), the other is failded (fail.txt)
+
+# delete those lines with failed conversion, save the rest to tmp.txt
+less fail.txt 1000G.EUR.allchrom.bim  |perl -lane ' $i++; if($i<=480){ $hash{$F[0]}++ }else{  if(exists $hash{$F[0]}){ } else{print}}' >tmp.txt
+
+# paste tmp and conversion to a new file, keep rs number, use hg38 location
+paste tmp.txt hglft_genome_2c8ac_f3d400.bed  |sed 's/:/\t/g' |sed 's/-/\t/g' |cut -f 1,7 |uniq -c
+
+# ignore parts in chr7_KI270803v1_alt|chr8_KI270821v1_alt (something wrong)
+paste tmp.txt hglft_genome_2c8ac_f3d400.bed  |sed 's/:/\t/g' |sed 's/-/\t/g' |perl -lane 'print join("\t",@F[6,7,3,4,5])' |egrep -v 'chr7_KI270803v1_alt|chr8_KI270821v1_alt' |bgzip -c >hg38.vcf.gz
+
+
+
