@@ -2,10 +2,11 @@
 
 R packages: 
 - PMA
-- MVTNORM
+- mvtnorm
 - GBJ
 - TisCoMM
-- plink2R
+- Rcpp
+- plink2R (https://github.com/gabraham/plink2R)
 
 Tabix, plink2 for preprocess of genotype data
 
@@ -20,7 +21,12 @@ Tabix, plink2 for preprocess of genotype data
 
 # Acknowledgement
 
-Part of the code is modified from previous work: S-MultiXcan at \url{https://github.com/hakyimlab/MetaXcan}; TWAS at \url{https://github.com/gusevlab/fusion_twas/}; UTMOST at \url{https://github.com/Joker-Jerome/UTMOST}; TisCoMM at \url{https://github.com/XingjieShi/TisCoMM}; JTI at \url{https://github.com/gamazonlab/MR-JTI}.
+Part of the code is modified from previous work: 
+- S-MultiXcan at https://github.com/hakyimlab/MetaXcan
+- TWAS at https://github.com/gusevlab/fusion_twas/
+- UTMOST at https://github.com/Joker-Jerome/UTMOST
+- TisCoMM at https://github.com/XingjieShi/TisCoMM
+- JTI at https://github.com/gamazonlab/MR-JTI
 
 We thank the authors for sharing their code! 
 
