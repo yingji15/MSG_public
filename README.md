@@ -30,7 +30,7 @@ scripts/real_data/step0_format_gtex_data_cmds.pl and scripts/real_data/step1_gen
 
 We applied sCCA to the X,Y matrices generated in the previous step
 
-## 3. summarize and plots
+## Summarize and plots
 
 In this step, we summarize the results from all tested genes for a trait, and produce 1) bar plot, 2) venn diagram, 3) manhatten plots to visualize the results by different methods.
 
