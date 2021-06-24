@@ -1,23 +1,18 @@
 # simulation I
-# 01/17/2021
+# 01/14/2021
 # major changes: 
-# 1)  those tissues sharing snps do not contribute to trait, but the effect size is random, (B)
+# 1)  only those tissues sharing snps contribute to trait, but the effect size is random, (B)
 # 2) their contribution to trait also differs (a)
 
 
-# /scratch/cgg/jiy1/CCA/sim_mcca_diffeff_offtraits_011721
 # test run
-# Rscript /home/jiy1/CCA_scripts/TisCoMM/simulation/evalType1Err_args_diffeff_offtraits_011721.R  --m 200 --p 300 --n 50000 --Ti 10  --Nsim 2  --hc 0.05 --hz 0.01 --s 0.05 --shares 0.3 --shareTi 2 --rhoX 0.1 --rhoE 0.5 --batch 1
-
-#  type 1 err
-# parallel --dryrun Rscript /home/jiy1/CCA_scripts/TisCoMM/simulation/evalType1Err_args_diffeff_011421.R  --m 200 --p 300 --n 50000 --Ti 10 --Nsim 200  --hc 0.05 --hz 0 --s 0.05 --shares 0.3 --shareTi {1} --rhoX 0.1 --rhoE 0.5 --batch {2} ::: 1 2 4 6 8 10 ::: $(seq 1 1 10) > tmpjob
-
-# less tmpjob | perl /home/weiq1/script/bingshan/ssub_array2 -pd `pwd`  -pm 40000 -ph 15 -email ying.ji@vanderbilt.edu -e
+# Rscript pwr_diffeff_difftraits_011421.R  --m 200 --p 300 --n 50000 --Ti 10  --Nsim 2  --hc 0.05 --hz 0.01 --s 0.05 --shares 0.3 --shareTi 2 --rhoX 0.1 --rhoE 0.5 --batch 1
 
 
 
 
-# Type I effor rate evluation under NULL models
+
+
 # use R 3.6
 .libPaths("/home/jiy1/R/rlib-3.6.0")
 library(mvtnorm)
@@ -25,32 +20,18 @@ library(GBJ)
 library(Rcpp)
 library(TisCoMM)
 library(optparse)
-source("/home/jiy1/CCA_scripts/TisCoMM/simulation/functions.r")
-#source("/fs0/jiy1/CCA/TisCoMM/simulation/functions.r")  
+source("functions/functions.r")
 # need to compile c code first: R CMD SHLIB optim.c
 # and add absolute path to c code to load
-source("/home/jiy1/CCA_scripts/TisCoMM/simulation/multiEstB.R")
-#source("/fs0/jiy1/CCA/TisCoMM/simulation/multiEstB.R")
-sourceCpp("/home/jiy1/CCA_scripts/TisCoMM/src/PXem_ss.cpp")
-#sourceCpp("/fs0/jiy1/CCA/TisCoMM/src/PXem_ss.cpp")
-sourceCpp("/home/jiy1/CCA_scripts/TisCoMM/src/PXem.cpp")
-#sourceCpp("/fs0/jiy1/CCA/TisCoMM/src/PXem.cpp")
+source("functions/multiEstB.R")
+sourceCpp("functions/PXem_ss.cpp")
+sourceCpp("functions/PXem.cpp")
 
-#source("functions.r")  
-#source("multiEstB.R")
 # a file with cca script
-source("/home/jiy1/CCA_scripts/TisCoMM/simulation/cca_092930.r")
-#source("/fs0/jiy1/CCA/TisCoMM/simulation/cca_092930.r")
-#sourceCpp("PXem_ss.cpp")
-#sourceCpp("PXem.cpp")
+source("functions/cca_092930.r")
 
 
 option_list <- list(
-    ## Type : logical, integer, souble complex, character
-    #make_option("--weights", action="store", default=NA, type='character',
-     #         help="File listing molecular weight RDat files (must have columns WGT,ID,CHR,P0,P1) [required]"),
-    #make_option("--weights_dir", action="store", default=NA, type='character',
-     #         help="Path to directory where weight files (WGT column) are stored [required]"),
     make_option(c("--m"), action="store", # training omic sample number
                 default=200,
                 type='integer', help="number of omic samples [default: %default]"),
@@ -257,21 +238,10 @@ evalType1Err <- function(m,n,p, h_z, h_c, s,shares,shareTi, rhoX, rhoE, Ti, batc
 # null: h_z = 0, z is just random
 		if (h_z == 0) z <- rnorm(n, 0, sqrt(3)) else {
 			#a <- runif(Ti, -1, 1) # alpha: exp on trait, 10 uniform numbers -1 to 1
-			#a <- rep(0,Ti)
+			a <- rep(0,Ti)
 			# nc is the number of causal splicing isoforms (number of splicing have effects on trait)
 			#a[1:shareTi] = 1
-			#a[1:shareTi] = runif(shareTi,-1,1)
-			if (shareTi+1 < Ti) {
-				a = rep(0,Ti)
-				num = Ti-shareTi
-				print(num)
-				a[(shareTi+1):Ti]=runif(num,-1,1)
-				print(a)
-			} else{
-				a = rep(0,Ti)
-			}
-			
-			
+			a[1:shareTi] = runif(shareTi,-1,1)
 			# B = diag(b)*W, here W has s% to be 1, other is 0
 			lp_z <- x2 %*% B %*% a #linear part of z
 			#h_z <- .01
@@ -336,7 +306,7 @@ evalType1Err <- function(m,n,p, h_z, h_c, s,shares,shareTi, rhoX, rhoE, Ti, batc
  		pvalue[i,1] <- MulTiXcan(x1, y, x2, z, cond)$pval	
 
 
-		# cca: from file /fs0/jiy1/CCA/TisCoMM/simulation/cca_092930.R, individual level
+		# cca: from file cca_092930.R, individual level
 		
 		pvalue[i,4] <- cca(x1,y,x2,z)$pval
 
@@ -423,9 +393,6 @@ evalType1Err <- function(m,n,p, h_z, h_c, s,shares,shareTi, rhoX, rhoE, Ti, batc
 				twas <- summary(lm(z ~ pc_top))
 				alpha <- twas$coefficients[-1]
 			
-		  #   twas$fstatistic
-	#       value       numdf       dendf
-	#    1.793461    2.000000 4997.000000
 				pval <- pf(twas$fstatistic[1],twas$fstatistic[2],twas$fstatistic[3],lower.tail=FALSE)
 			} # f-test, 
 			list(alpha = alpha, 
@@ -561,93 +528,4 @@ evalType1Err <- function(m,n,p, h_z, h_c, s,shares,shareTi, rhoX, rhoE, Ti, batc
 
 evalType1Err(m,n,p,h_z, h_c, s,shares,shareTi, rhoX, rhoE, Ti, batch, Rep)
 
-# AR(0.2,5)
-#        [,1]  [,2] [,3]  [,4]   [,5]
-# [1,] 1.0000 0.200 0.04 0.008 0.0016
-# [2,] 0.2000 1.000 0.20 0.040 0.0080
-# [3,] 0.0400 0.200 1.00 0.200 0.0400
-# [4,] 0.0080 0.040 0.20 1.000 0.2000
-# [5,] 0.0016 0.008 0.04 0.200 1.0000
-
-#m = 10
-#p = 5
-#rmvnorm(m, mean=rep(0, p), sigma = AR(rhoX, p))
-# generate a matrix under multivariate normal: 10x5, centered at 0, correlation structure as AR
-
-
-# library(glmnet)
-
-# predixcan <- function(x1, y, x2, z)	{ # use (x1,y) to train, (x2,z) to eval pvalue
-# 	Ti <- ncol(y)
-# 	p <- ncol(x1)
-# 	pvalue <- numeric(Ti)
-# 	for (k in 1:Ti) {
-# 		fit.elasnet.cv <- cv.glmnet(x1, y[,k], type.measure="mse", alpha=0.5, family="gaussian")
-# 		elasnet_M <- predict(fit.elasnet.cv, s=fit.elasnet.cv$lambda.min, newx=x2)
-# 		hat <- coefficients(summary(lm(z~elasnet_M)))
-# 		pvalue[k] <- ifelse(var(elasnet_M) < 1E-6, 1, hat[2,4])
-# 	}
-# 	pvalue
-# }
-# 
-# 
-# # transform Normal x to SNPs.
-# x2snp = function (X)
-# {
-#     n <- nrow(X)
-#     p <- ncol(X)
-#     maf <- runif(p, 0.05, 0.5)
-#     AAprob = maf^2;
-#     Aaprob = 2 * maf * (1-maf);
-#     quanti = cbind(1-Aaprob-AAprob, 1- AAprob)  ## attention
-#     # 1st col: aa prob; 2nd col: Aa + aa prob
-#     snp = matrix(0, n, p);
-#     for (j in 1:p){
-#         cutoff = qnorm(quanti[j,]); # where this prob map to normal
-#         snp[X[,j] <  cutoff[1], j] = 0;
-# # part of org matrix less than aa prob: so 0
-# # t[,j] <  cutoff[1]
-#  #[1]  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE  TRUE FALSE
-#         snp[X[,j] >= cutoff[1]  & X[,j] < cutoff[2],j] = 1;  ## attention
-#         snp[X[,j] >= cutoff[2], j] = 2;
-#     }
-#     snp
-# }
-# 
-
-
-
-# MulTiXcan <- function(x1, y, x2, z, cond = 30)
-#  	{
-#         n <- nrow(x2)
-#         Ti <- ncol(y)
-#   		yhat2 <- matrix(0, nrow = n, ncol = Ti)	
-#   		for (ti in 1:Ti)	{
-#   		  	cvfit = cv.glmnet(x1, y[, ti], alpha = 0.5)
-#             beta_hat = coef(cvfit, s = "lambda.min")
-#               
-#             yhat2[, ti] = x2%*%beta_hat[-1] + beta_hat[1]
-#         }
-#         # remove zero columns.
-#         yhat2_var <- apply(yhat2, 2, var)
-#         if (all(yhat2_var == 0))	{
-#         	alpha <- 0
-#         	pval <- 1
-#         }	else  if (sum(yhat2_var != 0) == 1) {
-#         	twas <- summary(lm(z ~ yhat2))
-#             alpha <- twas$coefficients[2,1]
-# 			pval <- twas$coefficients[2,4]
-#         } 	else  {
-#         	yhat2 <- yhat2[, yhat2_var != 0]
-# 
-#         	yhat2_pca <- summary(prcomp(yhat2, center = TRUE, scale. = TRUE))
-#         	ind_top <- which(yhat2_pca$importance[2, 1]/yhat2_pca$importance[2, ] < cond)
-#         	pc_top <- yhat2_pca$x
-#         	twas <- summary(lm(z ~ pc_top))
-#         	alpha <- twas$coefficients[-1]
-#         	pval <- pf(twas$fstatistic[1],twas$fstatistic[2],twas$fstatistic[3],lower.tail=FALSE)
-#     	}
-#     	list(alpha = alpha, 
-#     		 pval  =  unname(pval))
-#     }
 #       

@@ -1,4 +1,27 @@
-evalType1Err_args_diffeff_alltraits_011421.R
-evalType1Err_args_diffeff_difftraits_011421.R
-evalType1Err_args_diffeff_offtraits_011721.R
-readme
+
+There are 2 subdirectories: power/ for power simulations, t1e/ for type 1 error simulations
+
+We change several parameters to simulation a wide range of situations.
+
+These script will generate simulation test results according to the parameters. 
+
+power/:
+
+pwr_diffeff_alltraits_011421.R: include all simulations of MSG, UTMOST, S-MultiXcan, under scenario that all splicing events are trait-contributing
+
+pwr_diffeff_difftraits_011421.R: include all simulations of MSG, UTMOST, S-MultiXcan, under scenario that only effect-sharing splicing events are trait-contributing
+
+pwr_diffeff_offtraits_011721.R: include all simulations of MSG, UTMOST, S-MultiXcan, under scenario that only non-effect-sharing splicing events are trait-contributing
+
+
+pwr_diffeff_sccaacat.r: include simulation of sCCA+ACAT,under scenario that only effect-        sharing splicing events are trait-contributing
+
+pwr_diffeff_alltrait_sccaacat_060521.r: include simulation of sCCA+ACAT, under scenario that all splicing events  are trait-contributing
+
+pwr_diffeff_offtrait_sccaacat_060521.r: include simulation of sCCA+ACAT,  under scenario that only non-effect-     sharing splicing events are trait-contributing
+
+
+
+t1e/:
+
+evalType1Err_sim_msg_smultixcan_utmost_sccaacat.r: include simulations of MSG, UTMOST, S-MultiXcan,sCCA+ACAT for type I error
