@@ -1,4 +1,10 @@
-# Prerequisites
+This directory includes our example code and data for manuscript "Integration of multidimensional splicing data and GWAS summary statistics for risk gene discovery"
+
+# scripts/
+
+This folder includes example scripts to conduct the analysis in our manuscript.
+
+## Prerequisites
 
 R packages: 
 - PMA
@@ -12,10 +18,6 @@ Other packages: for preprocess of genotype data
 - [Tabix](http://www.htslib.org/doc/tabix.html) 
 - [plink2](https://www.cog-genomics.org/plink/2.0/) 
 
-
-# scripts/
-
-This folder includes example scripts to conduct the analysis in our manuscript.
 
 ## Simulations
 
