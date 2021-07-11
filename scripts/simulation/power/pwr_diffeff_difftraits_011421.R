@@ -27,8 +27,6 @@ source("functions/multiEstB.R")
 sourceCpp("functions/PXem_ss.cpp")
 sourceCpp("functions/PXem.cpp")
 
-# a file with cca script
-source("functions/cca_092930.r")
 
 
 option_list <- list(

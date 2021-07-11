@@ -33,8 +33,6 @@ sourceCpp("functions/PXem_ss.cpp")
 sourceCpp("functions/PXem.cpp")
 # this script is adapted from https://github.com/gusevlab/fusion_twas
 source("functions/allele_qc.r")
-# a script of applying sCCA
-source("functions/cca_092930.r")
 
 
 
