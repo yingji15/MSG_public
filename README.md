@@ -6,6 +6,8 @@ This folder includes example scripts to conduct the analysis in our manuscript.
 
 ## Prerequisites
 
+Please install the following packages before running the scripts, as the scripts depend on some functions from these packages
+
 R packages: 
 - PMA
 - mvtnorm
@@ -37,8 +39,8 @@ Input:
 
 - genotype: vcf.gz file
 - splicing phenotype: gtex processed splicing data from leafcutter, in bed.gz format, example: https://storage.googleapis.com/gtex_analysis_v8/single_tissue_qtl_data/GTEx_Analysis_v8_sQTL_phenotype_matrices.tar
-- file with reference SNPs: depend on the build of genotype type file, could be from hg38 or hg37
-
+- files with reference data: provided in ref_data/, here we provided hg38 version 
+- 
 Output: genotype matrix (X) and splicing event matrix (Y matrix). Examples can be found in example_data/ folder.
 
 ### Train MSG models
