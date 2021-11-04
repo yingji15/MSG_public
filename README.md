@@ -40,7 +40,7 @@ Input:
 - genotype: vcf.gz file
 - splicing phenotype: gtex processed splicing data from leafcutter, in bed.gz format, example: https://storage.googleapis.com/gtex_analysis_v8/single_tissue_qtl_data/GTEx_Analysis_v8_sQTL_phenotype_matrices.tar
 - files with reference data: provided in ref_data/, here we provided hg38 version 
-- 
+
 Output: genotype matrix (X) and splicing event matrix (Y matrix). Examples can be found in example_data/ folder.
 
 ### Train MSG models
