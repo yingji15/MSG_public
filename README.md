@@ -31,11 +31,24 @@ The application of MSG to real data consists of the following steps
 
 ### Generate files for X and Y matrix
 
-scripts/real_data/step0_format_gtex_data_cmds.pl and scripts/real_data/step1_genMatrix_gtex.pl are Perl scripts written by Qiang Wei to process the genotype and splicing event data provided on GTEx Protal. The output of these scripts are genotype matrix (X) and splicing event matrix (Y matrix). Examples can be found in example_data/ folder.
+scripts/real_data/step0_format_gtex_data_cmds.pl and scripts/real_data/step1_genMatrix_gtex.pl are Perl scripts written by Qiang Wei to process the genotype and splicing event data provided on GTEx Protal. 
+
+Input: 
+
+- genotype: vcf.gz file
+- splicing phenotype: gtex processed splicing data from leafcutter, in bed.gz format, example: https://storage.googleapis.com/gtex_analysis_v8/single_tissue_qtl_data/GTEx_Analysis_v8_sQTL_phenotype_matrices.tar
+- file with reference SNPs: depend on the build of genotype type file, could be from hg38 or hg37
+
+Output: genotype matrix (X) and splicing event matrix (Y matrix). Examples can be found in example_data/ folder.
 
 ### Train MSG models
 
 In scripts/real_data/2_MSG_models.R, we applied sCCA to the X,Y matrices generated in the previous step
+
+Input: X and Y matrices generated in previous step
+
+Output: RData file with weights
+
 
 ### Summarize and plots
 
