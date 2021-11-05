@@ -1,4 +1,4 @@
-This directory includes our example code and data for manuscript "Integration of multidimensional splicing data and GWAS summary statistics for risk gene discovery"
+This directory includes our example code and data for manuscript "Integration of multidimensional splicing data and GWAS summary statistics for risk gene discovery" (bioaxiv: https://www.biorxiv.org/content/10.1101/2021.09.13.460009v1.full)
 
 # scripts/
 
