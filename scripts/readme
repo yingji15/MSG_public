@@ -18,7 +18,7 @@ qqunif_092930.r: qqnorm functions, for manhatten plot etc
 
 real_data/:
 
-step0_format_gtex_data_cmds.pl: format gtex data for downstream modeling
+step0_format_gtex_data_cmds.pl: format gtex data for downstream modeling, written by Qiang Wei (co-author)
 
 step1_genMatrix_gtex.pl: generate matrix, written by Qiang Wei (co-author)
 
