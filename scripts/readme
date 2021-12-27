@@ -1,4 +1,6 @@
-functions/:
+There are following directories and files: 
+
+# functions/:
 
 This folder include some 'utility' functions used by/
 
@@ -16,7 +18,7 @@ PXem_ss.cpp: from TisCoMM, fast implementation in cpp
 
 qqunif_092930.r: qqnorm functions, for manhatten plot etc
 
-real_data/:
+# real_data/:
 
 step0_format_gtex_data_cmds.pl: format gtex data for downstream modeling, written by Qiang Wei (co-author)
 
@@ -26,7 +28,7 @@ step2_MSG_models.R: MSG models
 
 step3_summarize_and_plots.R: summarize results and plots
 
-simulation/:
+# simulation/:
 
 power/
 
