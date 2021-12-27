@@ -6,6 +6,8 @@ This folder includes example scripts to conduct the analysis in our manuscript.
 
 ## Prerequisites
 
+Please install Perl if using our scripts to format X (genotype), Y (splicing) matrices
+
 Please install the following packages before running the scripts, as the scripts depend on some functions from these packages
 
 R packages: 
